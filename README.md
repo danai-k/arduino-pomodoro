@@ -1,4 +1,4 @@
-# Arduino Waveshare LCD1602 Pomodoro Focus Timer !
+# Arduino Waveshare LCD1602 Pomodoro Focus Timer 
 
 A Pomodoro Focus Timer built for Arduino, using specifically a **Waveshare LCD1602 I2C module**, a push button, and a buzzer.
 
