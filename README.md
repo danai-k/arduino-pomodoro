@@ -53,6 +53,53 @@ Follow these step-by-step connections to wire up your components:
 
 ---
 
+## Customizing Timer Durations
+
+You can easily change the work and break durations in `PomodoroTimer.ino`. 
+
+Because 8-bit Arduinos (like the Uno and Nano) store standard integers as 16-bit values (max `32,767`), large millisecond values will **overflow into negative numbers** unless you append `UL` (**Unsigned Long**) to the end of the number.
+
+### Millisecond Calculation Formula
+$$\text{Duration in ms} = \text{Minutes} \times 60 \times 1000$$
+
+| Desired Time | Math | Code Value to Use |
+| :--- | :--- | :--- |
+| **1 Minute** (Test) | $1 \times 60 \times 1000$ | `60000UL` |
+| **5 Minutes** (Break) | $5 \times 60 \times 1000$ | `300000UL` |
+| **10 Minutes** | $10 \times 60 \times 1000$ | `600000UL` |
+| **15 Minutes** | $15 \times 60 \times 1000$ | `900000UL` |
+| **25 Minutes** (Focus) | $25 \times 60 \times 1000$ | `1500000UL` |
+| **50 Minutes** | $50 \times 60 \times 1000$ | `3000000UL` |
+
+
+### Where to Change It in Code
+
+Open `PomodoroTimer.ino` and update the millisecond values in both the `if` check and remaining time calculation:
+
+#### 1. Change Focus Duration (`case MIN25:`):
+```cpp
+// Replace 1500000UL with your custom focus duration
+if (elapsed >= 1500000UL) { 
+    // ...
+} else {
+    remainingSec = (1500000UL - elapsed) / 1000; 
+    // ...
+}
+```
+
+#### 2. Change Break Duration (`case MIN5:`):
+```cpp
+// Replace 300000UL with your custom break duration
+if (elapsed >= 300000UL) { 
+    // ...
+} else {
+    remainingSec = (300000UL - elapsed) / 1000; 
+    // ...
+}
+```
+
+---
+
 ## File Structure
 
 ```text
