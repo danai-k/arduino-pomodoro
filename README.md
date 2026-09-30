@@ -10,7 +10,7 @@ Unlike standard LCD1602 screens that use the PCF8574 I2C expansion chip, Wavesha
 
 * **Custom Waveshare Driver:**  low-level I2C communication tailored for the AiP31068 controller (`0x3E` / `0x27` address).
 * **Non-Blocking Timer Logic:** Built using `millis()` math rather than `delay()`, ensuring instant button responsiveness.
-* **Finite State Machine (FSM):** Structured progression across four distinct states:
+* **Timer Phases:** Structured progression across four distinct states:
   1. `START`: Ready prompt screen.
   2. `MIN25`: 25-minute active work/focus countdown.
   3. `BUZZ`: 1-second audio buzzer sequence upon completion.
@@ -128,7 +128,7 @@ arduino-waveshare-pomodoro/
 
 ---
 
-## State Machine Architecture
+## Timer Flowchart
 
 ```text
 +-------------------+
