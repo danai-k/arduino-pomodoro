@@ -78,7 +78,7 @@ arduino-waveshare-pomodoro/
 5. Select your Board (e.g., **Arduino Uno**) under **Tools > Board**.
 6. Select your COM port under **Tools > Port**.
 7. Click **Upload**.
-8. 
+
 ---
 
 ## State Machine Architecture
@@ -106,3 +106,7 @@ arduino-waveshare-pomodoro/
 ```
 
 ---
+
+## License
+
+This project is open-source and available under the [MIT License](LICENSE).
