@@ -1,7 +1,5 @@
 # Arduino Waveshare LCD1602 Pomodoro Focus Timer 
 
-![Pomodoro Timer Demo](demo.gif)
-
 A Pomodoro Focus Timer built for Arduino, using specifically a **Waveshare LCD1602 I2C module**, a push button, and a buzzer.
 
 Unlike standard LCD1602 screens that use the PCF8574 I2C expansion chip, Waveshare modules utilize the **AiP31068 controller**. Therefore, Standard Arduino libraries (such as `LiquidCrystal_I2C`) are incompatible with this chip. This repository provides a custom header driver (`WaveshareLCD.h`).
