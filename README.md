@@ -105,7 +105,7 @@ if (elapsed >= 300000UL) {
 ```text
 arduino-waveshare-pomodoro/
 ├── WaveshareLCD.h      # Custom driver header for Waveshare AiP31068 display
-├── PomodoroTimer.ino   # Main sketch containing the state machine & timer logic
+├── PomodoroTimer.ino   # Main sketch 
 └── README.md           # Project documentation
 ```
 ---
