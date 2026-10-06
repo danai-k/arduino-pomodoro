@@ -1,59 +1,52 @@
 #include <Wire.h>
 #include "WaveshareLCD.h"
 
-#define PIN_BUTTON  2 // pin 2 for button, can be modified
-#define PIN_BUZZER  8 // pin 8 for buzzer, can be modified
+#define BUTTON  2 // pin 2 for button, can be modified
+#define BUZZER  8 // pin 8 for buzzer, can be modified
 
 enum TimerState {
   START,
-  MIN25,
+  FOCUSTIME, // 25 min
   BUZZ,
-  MIN5
+  BREAKTIME // 5 min
 };
-
-
 
 TimerState currState = START;
 unsigned long startTime = 0;
-unsigned long duration = 0; // how long to countdown (ms)
-
+unsigned long duration = 0; // how long to countdown
+const unsigned long focusDuration = 1500000UL; // can be changed
+const unsigned long breakDuration = 300000UL; // can be changed
 
 void setup() {
-  // put your setup code here, to run once:
   Wire.begin();
   lcd_init();
-  
-  pinMode(PIN_BUTTON, INPUT_PULLUP);
-  pinMode(PIN_BUZZER, OUTPUT);
 
-  
+  pinMode(BUTTON, INPUT_PULLUP);
+  pinMode(BUZZER, OUTPUT);
+
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  unsigned long currMillis = millis(); //Grab current time at start
-
   switch (currState){
     case START:
-      lcd_set_cursor(0, 0); // Top Line
+      lcd_set_cursor(0, 0); // top line
       lcd_print("Pomodoro Ready !");
 
-      lcd_set_cursor(0, 1); // Bottom Line
+      lcd_set_cursor(0, 1); // bottom line
       lcd_print("Press Button    ");
 
-      if (digitalRead(PIN_BUTTON) == LOW)
+      if (digitalRead(BUTTON) == LOW) // button is pressed
       {
-        startTime = millis(); // store exact starting time
-        lcd_send_cmd(0x01); // clear screen (the 0x01 clears any leftover text)
-        delay(200);
-        currState = MIN25; // if button was pressed, go to the 25-minute countdown
+        startTime = millis(); // exact starting time
+        lcd_send_cmd(0x01); // clear screen (0x01 clears any leftover text)
+        currState = FOCUSTIME; // goto x-minute countdown for focus
       }
-
       break;
-    case MIN25: {
+
+    case FOCUSTIME: 
       unsigned long elapsed, remainingSec, mins, secs;
       elapsed = millis() - startTime;
-      if (elapsed >= 1500000UL) // 25 minutes are finished
+      if (elapsed >= focusDuration) //  minutes are finished 
       {
         lcd_send_cmd(0x01);
         delay(200);
@@ -62,7 +55,7 @@ void loop() {
       else
       {
         // calculation of remaining time
-        remainingSec = (1500000UL - elapsed) / 1000; // the 1,500,000 ms is the total duration of 25 minutes
+        remainingSec = (focusDuration - elapsed) / 1000;
         mins = remainingSec / 60;
         secs = remainingSec % 60;
 
@@ -76,24 +69,25 @@ void loop() {
         lcd_print("s      ");
       }
       break;
-    }
+
     case BUZZ:
       lcd_set_cursor(0, 0);
       lcd_print("Time's Up !");
       lcd_set_cursor(0, 1);
       lcd_print("Break Time !");
       
-      tone(PIN_BUZZER, 1000); // 1000Hz beep
-      delay(1000);            // Beep for 1 second
-      noTone(PIN_BUZZER);     // Stop beep
+      tone(BUZZER, 1000);
+      delay(1000);
+      noTone(BUZZER);
 
       startTime = millis();
-      currState = MIN5;
+      currState = BREAKTIME;
       break;
-    case MIN5: {
+
+    case BREAKTIME: {
       unsigned long elapsed, remainingSec, mins, secs;
       elapsed = millis() - startTime;
-      if (elapsed >= 300000UL)
+      if (elapsed >= breakDuration)
       {
         lcd_send_cmd(0x01);
         delay(200);
@@ -101,7 +95,7 @@ void loop() {
       }
       else
       {
-        remainingSec = (300000UL - elapsed) / 1000;
+        remainingSec = (breakDuration - elapsed) / 1000;
         mins = remainingSec / 60;
         secs = remainingSec % 60;
 
